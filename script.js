@@ -1,41 +1,43 @@
 // Add this near the top of your script.js
 const isLocalhost = window.location.hostname === 'localhost' || 
                     window.location.hostname === '127.0.0.1';
-const BASE_PATH = isLocalhost ? '' : '/family-tree';
+const REPO_NAME = 'FamilyTree'; // MUST match your GitHub repository name exactly
+const BASE_PATH = isLocalhost ? '' : `/${REPO_NAME}`;
 
-// Then modify the getImagePath function:
-const getImagePath = (rawPath) => {
-    const filename = rawPath.split('\\').pop();
+// Improved Image Path Handler
+function getImagePath(rawPath) {
+    // Extract filename from any path format (Windows or Unix)
+    const filename = rawPath.split(/[\\/]/).pop().toLowerCase();
     return `${BASE_PATH}/images/${filename}`;
-};
+}
 const familyData = {
     id: 1,
     name: "Shri Chandrapal Singh",
     dob: "dob1",
     age: "age1",
     occupation: "English Teacher",
-    photo: "images/chandrapal.jpg",
+    photo: "chandrapal.jpg",
     spouse: {
         id: 2,
         name: "Shrimati Ghosan",
         dob: "dob2",
         age: "age2",
         occupation: "House Wife",
-        photo: "images/ghosan.jpg"
+        photo: "ghosan.jpg"
     },
     children: [
         // Son 1 - Late Mr. Ajay Gautam
         {
             id: 3,
             name: "Late Mr. Ajay Gautam",
-            photo: "images/ajay.jpg",
+            photo: "ajay.jpg",
             spouse: {
                 id: 4,
                 name: "Mrs. Renu Gautam",
                 dob: "20 Feb",
                 age: "age4",
                 occupation: "House Wife & Tailor",
-                photo: "images/renu.jpg"
+                photo: "renu.jpg"
             },
             children: [
                 {
@@ -44,7 +46,7 @@ const familyData = {
                     dob: "18 May 2018",
                     age: "6 yrs",
                     occupation: "Class 1st",
-                    photo: "images/kunal.jpg",
+                    photo: "kunal.jpg",
                     birthOrder: 4
                 },
                 {
@@ -53,7 +55,7 @@ const familyData = {
                     dob: "2 May 2012",
                     age: "13 yrs",
                     occupation: "5th Class",
-                    photo: "images/ritik.jpg",
+                    photo: "ritik.jpg",
                     birthOrder: 3
                 },
                 {
@@ -62,7 +64,7 @@ const familyData = {
                     dob: "30 Dec 2009",
                     age: "16 yrs",
                     occupation: "10th Class",
-                    photo: "images/shalu.jpg",
+                    photo: "shalu.jpg",
                     birthOrder: 2
                 },
                 {
@@ -71,7 +73,7 @@ const familyData = {
                     dob: "21 Feb 2008",
                     age: "17 yrs",
                     occupation: "12th Class",
-                    photo: "images/tannia.jpg",
+                    photo: "tannia.jpg",
                     birthOrder: 1
                 }
             ].sort((a, b) => a.birthOrder - b.birthOrder)
@@ -83,14 +85,14 @@ const familyData = {
             dob: "1 March 1979",
             age: "46",
             occupation: "Work at Office",
-            photo: "images/sunil.jpg",
+            photo: "sunil.jpg",
             spouse: {
                 id: 10,
                 name: "Mrs. Santosh",
                 dob: "5 Aug 1980",
                 age: "45 yrs",
                 occupation: "House Wife & Work at Shop",
-                photo: "images/santosh.jpg"
+                photo: "santosh.jpg"
             },
             children: [
                 {
@@ -99,7 +101,7 @@ const familyData = {
                     dob: "12-11-2006",
                     age: "18 yrs",
                     occupation: "Btech Student",
-                    photo: "images/honey.jpg",
+                    photo: "honey.jpg",
                     birthOrder: 1
                 },
                 {
@@ -108,7 +110,7 @@ const familyData = {
                     dob: "21 Feb 2008",
                     age: "17 yrs",
                     occupation: "12th Class",
-                    photo: "images/abhi.jpg",
+                    photo: "abhi.jpg",
                     birthOrder: 2
                 }
             ].sort((a, b) => a.birthOrder - b.birthOrder)
@@ -120,14 +122,14 @@ const familyData = {
             dob: "15 June 1974",
             age: "51 yrs",
             occupation: "Advocate",
-            photo: "images/dibbu.jpg",
+            photo: "dibbu.jpg",
             spouse: {
                 id: 14,
                 name: "Mrs. Urmilla",
                 dob: "10 Feb 1984",
                 age: "41 yrs",
                 occupation: "House Wife & Tailor",
-                photo: "images/urmila.jpg"
+                photo: "urmila.jpg"
             },
             children: [
                 {
@@ -136,7 +138,7 @@ const familyData = {
                     dob: "24 Jan 2006",
                     age: "19 yrs",
                     occupation: "12th Passed (Dropper) & Neet Aspirant",
-                    photo: "images/tanvi.jpg",
+                    photo: "tanvi.jpg",
                     birthOrder: 1
                 },
                 {
@@ -145,7 +147,7 @@ const familyData = {
                     dob: "15 Nov 2007",
                     age: "17 yrs",
                     occupation: "class-12th",
-                    photo: "images/happy.jpg",
+                    photo: "happy.jpg",
                     birthOrder: 2
                 },
                 {
@@ -154,7 +156,7 @@ const familyData = {
                     dob: "25 Oct 2016",
                     age: "8 yrs",
                     occupation: "Class-3rd",
-                    photo: "images/mehul.jpg",
+                    photo: "mehul.jpg",
                     birthOrder: 3
                 }
             ].sort((a, b) => a.birthOrder - b.birthOrder)
@@ -166,14 +168,14 @@ const familyData = {
             dob: "dob4",
             age: "Age4",
             occupation: "Work at Home",
-            photo: "images/mukesh.jpg",
+            photo: "mukesh.jpg",
             spouse: {
                 id: 19,
                 name: "Mrs. Sudesh",
                 dob: "dob4",
                 age: "Age4",
                 occupation: "House Wife & Tailor",
-                photo: "images/sudesh.jpg"
+                photo: "sudesh.jpg"
             },
             children: [
                 {
@@ -182,7 +184,7 @@ const familyData = {
                     dob: "19 Jan 2002",
                     age: "23 yrs",
                     occupation: "12th Passed",
-                    photo: "images/deep.jpg",
+                    photo: "deep.jpg",
                     birthOrder: 1
                 },
                 {
@@ -191,7 +193,7 @@ const familyData = {
                     dob: "1 Sept 2004",
                     age: "20 yrs",
                     occupation: "12th Passed & Trader",
-                    photo: "images/akash.jpg",
+                    photo: "akash.jpg",
                     birthOrder: 2
                 }
             ].sort((a, b) => a.birthOrder - b.birthOrder)
@@ -203,20 +205,20 @@ const familyData = {
             dob: "dob1",
             age: "Age1",
             occupation: "House Wife",
-            photo: "images/sunita.jpg",
+            photo: "sunita.jpg",
             spouse: {
                 id: 23,
                 name: "Mr. Binod",
                 dob: "dob1",
                 age: "Age1",
                 occupation: "Work at Office",
-                photo: "images/binod.jpg"
+                photo: "binod.jpg"
             },
             children: [
                 {
                     id: 24,
                     name: "Late Mr. Manish",
-                    photo: "images/manish.jpg",
+                    photo: "manish.jpg",
                     birthOrder: 1
                 },
                 {
@@ -225,7 +227,7 @@ const familyData = {
                     dob: "dob1",
                     age: "Age1",
                     occupation: "College Student",
-                    photo: "images/himanshi.jpg",
+                    photo: "himanshi.jpg",
                     birthOrder: 2
                 },
                 {
@@ -234,7 +236,7 @@ const familyData = {
                     dob: "dob2",
                     age: "Age2",
                     occupation: "College Student",
-                    photo: "images/payal.jpg",
+                    photo: "payal.jpg",
                     birthOrder: 3
                 },
                 {
@@ -243,7 +245,7 @@ const familyData = {
                     dob: "19 Jan 2008",
                     age: "17 yrs",
                     occupation: "N/A",
-                    photo: "images/aaryan.jpg",
+                    photo: "aaryan.jpg",
                     birthOrder: 4
                 }
             ].sort((a, b) => a.birthOrder - b.birthOrder)
@@ -313,40 +315,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const img = document.createElement('img');
     img.className = 'member-photo';
     img.alt = member.name;
-    
-    // Try multiple path formats
-    const tryImagePaths = [
-        member.photo,
-        member.photo.replace(/\\/g, '/'), // Fix backslashes
-        'images/' + member.photo.split('/').pop(), // Try just filename in images folder
-        'images/' + member.photo.split('\\').pop(), // For Windows paths
-        './' + member.photo, // Try relative path
-        member.photo.replace('images/', './images/') // Add relative prefix
-    ];
-    
-    // Remove duplicate paths
-    const uniquePaths = [...new Set(tryImagePaths)];
-    
-    // Function to try next image path
-    const tryNextPath = (index = 0) => {
-        if (index >= uniquePaths.length) {
-            // All paths failed - show placeholder
-            const initials = member.name.split(' ').map(n => n[0]).join('');
-            img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
-            return;
-        }
-        
-        img.src = uniquePaths[index];
-    };
+    img.src = getImagePath(member.photo);
     
     img.onerror = function() {
-        const currentSrc = this.src;
-        const currentIndex = uniquePaths.indexOf(currentSrc);
-        tryNextPath(currentIndex + 1);
+        // Fallback to initials if image fails to load
+        const initials = member.name.split(' ').map(n => n[0]).join('');
+        this.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
+        console.warn(`Failed to load image: ${member.photo}`);
     };
-    
-    // Start trying paths
-    tryNextPath();
     
     const nameElement = document.createElement('div');
     nameElement.className = 'member-name';
@@ -367,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     return element;
 }
+
     function setupInteractions() {
         const members = document.querySelectorAll('.member');
         
