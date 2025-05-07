@@ -1,3 +1,13 @@
+// Add this near the top of your script.js
+const isLocalhost = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1';
+const BASE_PATH = isLocalhost ? '' : '/family-tree';
+
+// Then modify the getImagePath function:
+const getImagePath = (rawPath) => {
+    const filename = rawPath.split('\\').pop();
+    return `${BASE_PATH}/images/${filename}`;
+};
 const familyData = {
     id: 1,
     name: "Shri Chandrapal Singh",
