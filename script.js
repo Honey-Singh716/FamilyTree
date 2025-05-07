@@ -1,15 +1,28 @@
 // Add this near the top of your script.js
+// Environment configuration - IMPORTANT UPDATE
 const isLocalhost = window.location.hostname === 'localhost' || 
                     window.location.hostname === '127.0.0.1';
-const REPO_NAME = 'FamilyTree'; // MUST match your GitHub repository name exactly
+const REPO_NAME = 'FamilyTree'; // Must match your GitHub repo name exactly
 const BASE_PATH = isLocalhost ? '' : `/${REPO_NAME}`;
 
-// Improved Image Path Handler
-function getImagePath(rawPath) {
-    // Extract filename from any path format (Windows or Unix)
-    const filename = rawPath.split(/[\\/]/).pop().toLowerCase();
-    return `${BASE_PATH}/images/${filename}`;
+// Enhanced image path resolver
+function getImagePath(filename) {
+    // Remove any path components and force lowercase
+    const cleanName = filename.split(/[\\/]/).pop().toLowerCase();
+    
+    // Try multiple possible locations
+    const pathsToTry = [
+        `${BASE_PATH}/images/${cleanName}`,  // Primary location
+        `${BASE_PATH}/${cleanName}`,         // Fallback to root
+        `images/${cleanName}`,               // Local development fallback
+        cleanName                            // Final fallback
+    ];
+    
+    return pathsToTry;
 }
+
+// Updated createMemberElement function
+
 const familyData = {
     id: 1,
     name: "Shri Chandrapal Singh",
@@ -307,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateControls();
     }
 
- function createMemberElement(member) {
+function createMemberElement(member) {
     const element = document.createElement('div');
     element.className = 'member';
     element.setAttribute('data-id', member.id);
@@ -316,33 +329,25 @@ document.addEventListener('DOMContentLoaded', function() {
     img.className = 'member-photo';
     img.alt = member.name;
     
-    // First try the correct path
-    img.src = getImagePath(member.photo);
+    // Initialize image loading
+    const paths = getImagePath(member.photo);
+    let currentAttempt = 0;
     
-    img.onerror = function() {
-        // If first attempt fails, try alternative paths
-        const alternatives = [
-            `images/${member.photo.toLowerCase()}`,
-            `/${member.photo.toLowerCase()}`,
-            member.photo.toLowerCase()
-        ];
-        
-        let currentTry = 0;
-        const tryNext = () => {
-            if (currentTry < alternatives.length) {
-                this.src = alternatives[currentTry];
-                currentTry++;
-            } else {
-                // Final fallback to initials
-                const initials = member.name.split(' ').map(n => n[0]).join('');
-                this.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
-            }
-        };
-        
-        this.onerror = tryNext;
-        tryNext();
+    const tryNextPath = () => {
+        if (currentAttempt < paths.length) {
+            img.src = paths[currentAttempt];
+            currentAttempt++;
+        } else {
+            // Final fallback - initials avatar
+            const initials = member.name.split(' ').map(n => n[0]).join('');
+            img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
+        }
     };
     
+    img.onerror = tryNextPath;
+    tryNextPath(); // Start trying paths
+    
+    // Rest of your element creation code...
     const nameElement = document.createElement('div');
     nameElement.className = 'member-name';
     nameElement.textContent = member.name;
