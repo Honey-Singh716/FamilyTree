@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateControls();
     }
 
-    function createMemberElement(member) {
+   function createMemberElement(member) {
     const element = document.createElement('div');
     element.className = 'member';
     element.setAttribute('data-id', member.id);
@@ -304,22 +304,39 @@ document.addEventListener('DOMContentLoaded', function() {
     img.className = 'member-photo';
     img.alt = member.name;
     
-    // First try the photo path
-    img.src = member.photo;
+    // Try multiple path formats
+    const tryImagePaths = [
+        member.photo,
+        member.photo.replace(/\\/g, '/'), // Fix backslashes
+        'images/' + member.photo.split('/').pop(), // Try just filename in images folder
+        'images/' + member.photo.split('\\').pop(), // For Windows paths
+        './' + member.photo, // Try relative path
+        member.photo.replace('images/', './images/') // Add relative prefix
+    ];
     
-    img.onerror = function() {
-        // Fallback 1: Try alternative path format
-        const altPath = member.photo.replace(/\\/g, '/');
-        if (altPath !== member.photo) {
-            this.src = altPath;
+    // Remove duplicate paths
+    const uniquePaths = [...new Set(tryImagePaths)];
+    
+    // Function to try next image path
+    const tryNextPath = (index = 0) => {
+        if (index >= uniquePaths.length) {
+            // All paths failed - show placeholder
+            const initials = member.name.split(' ').map(n => n[0]).join('');
+            img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
             return;
         }
         
-        // Fallback 2: Show placeholder with initials
-        const initials = member.name.split(' ').map(n => n[0]).join('');
-        this.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
-        console.warn("Failed to load image:", member.photo);
+        img.src = uniquePaths[index];
     };
+    
+    img.onerror = function() {
+        const currentSrc = this.src;
+        const currentIndex = uniquePaths.indexOf(currentSrc);
+        tryNextPath(currentIndex + 1);
+    };
+    
+    // Start trying paths
+    tryNextPath();
     
     const nameElement = document.createElement('div');
     nameElement.className = 'member-name';
