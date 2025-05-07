@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateControls();
     }
 
-   function createMemberElement(member) {
+ function createMemberElement(member) {
     const element = document.createElement('div');
     element.className = 'member';
     element.setAttribute('data-id', member.id);
@@ -315,13 +315,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const img = document.createElement('img');
     img.className = 'member-photo';
     img.alt = member.name;
+    
+    // First try the correct path
     img.src = getImagePath(member.photo);
     
     img.onerror = function() {
-        // Fallback to initials if image fails to load
-        const initials = member.name.split(' ').map(n => n[0]).join('');
-        this.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
-        console.warn(`Failed to load image: ${member.photo}`);
+        // If first attempt fails, try alternative paths
+        const alternatives = [
+            `images/${member.photo.toLowerCase()}`,
+            `/${member.photo.toLowerCase()}`,
+            member.photo.toLowerCase()
+        ];
+        
+        let currentTry = 0;
+        const tryNext = () => {
+            if (currentTry < alternatives.length) {
+                this.src = alternatives[currentTry];
+                currentTry++;
+            } else {
+                // Final fallback to initials
+                const initials = member.name.split(' ').map(n => n[0]).join('');
+                this.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="%234a6b57"/><text x="50%" y="50%" fill="white" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
+            }
+        };
+        
+        this.onerror = tryNext;
+        tryNext();
     };
     
     const nameElement = document.createElement('div');
