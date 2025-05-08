@@ -180,13 +180,13 @@ const familyData = {
             name: "Mr. Mukesh Gautam",
             dob: "dob4",
             age: "Age4",
-            occupation: "Work at Home",
+            occupation: "Contractor",
             photo: "mukesh.jpg",
             spouse: {
                 id: 19,
                 name: "Mrs. Sudesh",
-                dob: "dob4",
-                age: "Age4",
+                dob: "1979",
+                age: "46 yrs",
                 occupation: "House Wife & Tailor",
                 photo: "sudesh.jpg"
             },
@@ -196,7 +196,7 @@ const familyData = {
                     name: "Deepanshu Gautam",
                     dob: "19 Jan 2002",
                     age: "23 yrs",
-                    occupation: "12th Passed",
+                    occupation: "12th Passed & Video Creator",
                     photo: "deep.jpg",
                     birthOrder: 1
                 },
@@ -224,7 +224,7 @@ const familyData = {
                 name: "Mr. Binod",
                 dob: "dob1",
                 age: "Age1",
-                occupation: "Work at Office",
+                occupation: "Work at Office(Myntra)",
                 photo: "binod.jpg"
             },
             children: [
@@ -239,7 +239,7 @@ const familyData = {
                     name: "Himanshi",
                     dob: "dob1",
                     age: "Age1",
-                    occupation: "College Student",
+                    occupation: "N/A",
                     photo: "himanshi.jpg",
                     birthOrder: 2
                 },
