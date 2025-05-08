@@ -26,8 +26,8 @@ function getImagePath(filename) {
 const familyData = {
     id: 1,
     name: "Shri Chandrapal Singh",
-    dob: "dob1",
-    age: "age1",
+    dob: "1947",
+    age: "78 yrs",
     occupation: "English Teacher",
     photo: "chandrapal.jpg",
     spouse: {
